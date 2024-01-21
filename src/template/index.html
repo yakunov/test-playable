@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"><title>Playable</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <script type="text/javascript">
+      window.onload = function() {
+        const isMraid = typeof mraid !== 'undefined'
+
+        function isReady() {
+            if (mraid.isViewable()) {
+              window.initPlayble();
+            } else {
+                mraid.addEventListener('viewableChange', function(viewable) {
+                    if (viewable) {
+                        mraid.removeEventListener('viewableChange', arguments.callee)
+                        window.initPlayble();
+                    }
+                });
+            }
+        }
+
+        if (isMraid) {
+            if (mraid.getState() == 'loading') {
+                mraid.addEventListener('ready', isReady)
+            } else {
+                isReady();
+            }
+        } else {
+          window.initPlayble();
+        }
+
+
+        window.clickInstall = function() {
+            var link = 'https://play.google.com/store/apps/details?id=games.burny.playdoku.block.puzzle&hl=en&gl=US'
+
+            if (isMraid) {
+                mraid.open(link)
+            } else {
+                window.open(link, '_blank')
+            }
+        }
+      }
+    </script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width:100%;
+        height:100%;
+        background-color: #0c5b5f;
+        overflow:hidden;
+        user-select: none;
+        position: relative;
+      }
+      .playbleCanvas{
+        opacity: 0;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
+      .visible {
+        opacity: 1;
+        transition: opacity 300ms;
+      }
+    </style>
+
+  </head>
+  <body>
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- inject:js -->
+  <!-- endinject -->
+
+  </body>
+</html>
